@@ -18,7 +18,7 @@ var CONTACT_EMAIL = 'YOUR-EMAIL@example.com';
 
 Every "Book a demo" button uses it.
 
-Once the site has its final address, also change `og:image` near the top of `index.html` to the full URL (for example `https://<name>.github.io/assets/og.jpg`), so link previews in Slack, LinkedIn and WeChat show the image.
+The link-preview image (`og:image`, near the top of `index.html`) currently points at `https://ggggggyyyyyy.github.io/qxflow/assets/og.jpg`. Change it, and `og:url`, if the site moves to its own domain.
 
 ## Add or change a case demo
 

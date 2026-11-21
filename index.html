@@ -8,7 +8,8 @@
 <meta property="og:title" content="QxFlow — AI agents for Canadian life actuarial teams">
 <meta property="og:description" content="Input checks, run orchestration, independent review and the Appointed Actuary's Report. Code calculates. Actuaries approve.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="assets/og.jpg">
+<meta property="og:url" content="https://ggggggyyyyyy.github.io/qxflow/">
+<meta property="og:image" content="https://ggggggyyyyyy.github.io/qxflow/assets/og.jpg">
 <meta name="theme-color" content="#F5F7FB">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -79,26 +80,39 @@ h2 em{font-family:var(--serif);font-style:italic;font-weight:500;letter-spacing:
 .sec-lede{color:var(--ink2);max-width:56ch;margin:16px 0 0;font-size:18px}
 
 /* cases */
-.cases{display:grid;grid-template-columns:minmax(0,390px) minmax(0,1fr);gap:28px;margin-top:44px;align-items:start}
-.caselist{display:flex;flex-direction:column;gap:6px}
-.case{position:relative;display:block;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:16px;padding:18px 20px 20px;cursor:pointer;font:inherit;color:inherit;overflow:hidden}
-.case:hover{background:rgba(255,255,255,.6)}
-.case[aria-selected="true"]{background:#fff;border-color:var(--line);box-shadow:0 12px 34px rgba(16,42,96,.09)}
-.case .top{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12.5px;color:var(--ink3)}
+.kicker b{font-weight:400;color:var(--ink3)}
+.cases{display:grid;grid-template-columns:minmax(0,410px) minmax(0,1fr);gap:28px;margin-top:40px;align-items:start}
+.caselist{display:flex;flex-direction:column;gap:10px}
+.case{position:relative;display:grid;grid-template-columns:108px minmax(0,1fr);column-gap:14px;align-items:start;width:100%;text-align:left;background:rgba(255,255,255,.6);border:1px solid var(--line);border-radius:16px;padding:12px 16px 14px 12px;cursor:pointer;font:inherit;color:inherit;overflow:hidden;transition:background .15s,border-color .15s,box-shadow .15s}
+.case:hover{background:#fff;border-color:#B4C3DB}
+.case:focus-visible,.nb:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.case[aria-selected="true"]{background:#fff;border-color:#9FB8E8;box-shadow:0 12px 34px rgba(16,42,96,.10)}
+.case .thumb{position:relative;display:block;aspect-ratio:16/9;border-radius:9px;overflow:hidden;background:#1A4283;margin-top:2px}
+.case .thumb img{display:block;width:100%;height:100%;object-fit:cover}
+.case .thumb:after{content:'';position:absolute;left:50%;top:50%;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;background:rgba(10,27,61,.8) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3.2 1.6v6.8L8.6 5z' fill='%23fff'/%3E%3C/svg%3E") center/11px no-repeat}
+.case[aria-selected="true"] .thumb{box-shadow:0 0 0 2px var(--blue)}
+.case[aria-selected="true"] .thumb:after{display:none}
+.case .body{display:block;min-width:0}
+.case .top{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12.5px;color:var(--ink3)}
 .case .top .n{color:var(--blue);font-weight:500}
 .case .top .t{margin-left:auto}
 .chip{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:6px;font-weight:500}
 .chip.prep{background:#DDF7F2;color:#0A6F64}
 .chip.rev{background:#E3EDFF;color:#1D4FB8}
 .chip.appr{background:#FFF1D6;color:#8A5A00}
-.case h3{font-size:19px;line-height:1.25;font-weight:600;letter-spacing:-.012em;margin:9px 0 0}
-.case p{margin:9px 0 0;font-size:15.5px;line-height:1.5;color:var(--ink2);display:none}
-.case[aria-selected="true"] p{display:block}
+.case .ttl{display:block;font-size:17px;line-height:1.25;font-weight:600;letter-spacing:-.01em;margin-top:7px}
+.case .txt{display:none;grid-column:1/-1;margin-top:12px;font-size:15px;line-height:1.5;color:var(--ink2)}
+.case[aria-selected="true"] .txt{display:block}
 .case .bar{position:absolute;left:0;right:0;bottom:0;height:3px;background:transparent}
 .case[aria-selected="true"] .bar{background:#EAF0F9}
 .case .bar i{display:block;height:100%;width:0;background:var(--blue)}
 .stage{position:sticky;top:92px}
 .stage .frame{margin-top:0}
+.stagebar{display:flex;align-items:center;gap:10px;margin-top:14px}
+.nb{flex:none;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;font-size:16px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.nb:hover{border-color:#B4C3DB}
+.stagebar .count{flex:none;font-family:var(--mono);font-size:13px;color:var(--ink2);min-width:60px;text-align:center}
+.stagebar .now{font-weight:600;font-size:15.5px;margin-left:6px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* roles + principles */
 .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:18px;margin-top:44px}
@@ -134,6 +148,8 @@ footer p{margin:0;max-width:70ch}
   section{padding:68px 0}
   .cases{grid-template-columns:minmax(0,1fr)}
   .stage{position:static;order:-1}
+  .case{grid-template-columns:96px minmax(0,1fr);column-gap:12px}
+  .stagebar .now{display:none}
   .band{padding:48px 26px;border-radius:22px}
   .frame{border-radius:14px}
 }
@@ -180,14 +196,20 @@ footer p{margin:0;max-width:70ch}
 
   <section id="cases">
     <div class="wrap">
-      <span class="kicker">Cases</span>
+      <span class="kicker">Cases <b id="caseTotal"></b></span>
       <h2>See it work, <em>one case at a time.</em></h2>
-      <p class="sec-lede">Short clips, one workflow each. Pick a case or let them play through.</p>
+      <p class="sec-lede">Short clips, one workflow each. Pick any case, or let them play through in order.</p>
       <div class="cases">
         <div class="caselist" id="caseList" role="tablist" aria-label="Cases"></div>
         <div class="stage" id="casePanel" role="tabpanel">
           <div class="frame">
             <video id="caseVideo" muted playsinline preload="metadata"></video>
+          </div>
+          <div class="stagebar">
+            <button class="nb" id="casePrev" type="button" aria-label="Previous case">&larr;</button>
+            <span class="count" id="caseCount" aria-live="polite"></span>
+            <button class="nb" id="caseNext" type="button" aria-label="Next case">&rarr;</button>
+            <span class="now" id="caseNow"></span>
           </div>
           <p class="note">Illustrative data. The AXIS window is a simplified stand-in.</p>
         </div>
@@ -276,66 +298,98 @@ var CASES = [
     links[i].setAttribute('href', 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('QxFlow demo'));
   }
 
-  // case player
   var list = document.getElementById('caseList');
   var video = document.getElementById('caseVideo');
+  var hero = document.getElementById('heroVideo');
+  var countEl = document.getElementById('caseCount');
+  var nowEl = document.getElementById('caseNow');
   var tabs = [];
   var current = -1;
-  var caseVisible = false;
-  function fmt(s) { return '0:' + (s < 10 ? '0' : '') + s; }
+  var visible = { hero: false, cases: false };
+  function two(n) { return (n < 10 ? '0' : '') + n; }
+  function play(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  // case player: one card per entry in CASES
+  document.getElementById('caseTotal').textContent = '· ' + CASES.length + ' demos';
   CASES.forEach(function (c, idx) {
-    var b = document.createElement('button');
-    b.className = 'case';
+    var b = el('button', 'case');
     b.type = 'button';
     b.setAttribute('role', 'tab');
     b.setAttribute('aria-controls', 'casePanel');
     b.setAttribute('aria-selected', 'false');
-    b.innerHTML = '<span class="top"><span class="n"></span><span class="chip"></span><span class="t"></span></span><h3></h3><p></p><span class="bar"><i></i></span>';
-    b.querySelector('.n').textContent = c.n;
-    var chip = b.querySelector('.chip'); chip.textContent = c.roleName; chip.className = 'chip ' + c.role;
-    b.querySelector('.t').textContent = fmt(c.secs);
-    b.querySelector('h3').textContent = c.title;
-    b.querySelector('p').textContent = c.text;
+    var thumb = el('span', 'thumb');
+    var img = document.createElement('img');
+    img.src = c.poster; img.alt = '';
+    thumb.appendChild(img);
+    var top = el('span', 'top');
+    top.appendChild(el('span', 'n', c.n));
+    top.appendChild(el('span', 'chip ' + c.role, c.roleName));
+    top.appendChild(el('span', 't', '0:' + two(c.secs)));
+    var body = el('span', 'body');
+    body.appendChild(top);
+    body.appendChild(el('span', 'ttl', c.title));
+    var bar = el('span', 'bar');
+    bar.appendChild(el('i'));
+    b.appendChild(thumb); b.appendChild(body); b.appendChild(el('span', 'txt', c.text)); b.appendChild(bar);
     b.addEventListener('click', function () { select(idx, true); });
     list.appendChild(b);
     tabs.push(b);
   });
   function select(idx, userAction) {
-    if (idx === current) { if (userAction) { video.currentTime = 0; play(video); } return; }
+    if (idx === current && !video.error) { if (userAction) { video.currentTime = 0; play(video); } return; }
     current = idx;
     tabs.forEach(function (t, j) {
       t.setAttribute('aria-selected', j === idx ? 'true' : 'false');
       t.querySelector('.bar i').style.width = '0';
     });
     var c = CASES[idx];
+    countEl.textContent = two(idx + 1) + ' / ' + two(CASES.length);
+    nowEl.textContent = c.title;
     video.poster = c.poster;
     video.src = c.src;
     video.setAttribute('aria-label', 'Demo clip: ' + c.title);
     video.load();
-    if ((caseVisible || userAction) && !reduce) play(video);
+    if ((visible.cases || userAction) && !reduce) play(video);
   }
-  function play(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  document.getElementById('casePrev').addEventListener('click', function () { select((current + CASES.length - 1) % CASES.length, true); });
+  document.getElementById('caseNext').addEventListener('click', function () { select((current + 1) % CASES.length, true); });
   video.addEventListener('timeupdate', function () {
     if (current < 0 || !video.duration) return;
     tabs[current].querySelector('.bar i').style.width = (100 * video.currentTime / video.duration).toFixed(1) + '%';
   });
   video.addEventListener('ended', function () { select((current + 1) % CASES.length, true); });
-  if (reduce) { video.controls = true; }
+  if (reduce) { video.controls = true; hero.controls = true; }
   select(0, false);
 
   // play videos only while they are on screen
-  var hero = document.getElementById('heroVideo');
-  if (reduce) { hero.controls = true; }
   if ('IntersectionObserver' in window && !reduce) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        var on = e.isIntersecting && e.intersectionRatio > (e.target === hero ? 0.08 : 0.35);
-        if (e.target === video) caseVisible = on;
+        var isHero = e.target === hero;
+        var on = e.isIntersecting && e.intersectionRatio > (isHero ? 0.08 : 0.35);
+        visible[isHero ? 'hero' : 'cases'] = on;
         if (on) play(e.target); else e.target.pause();
       });
     }, { threshold: [0, 0.08, 0.35, 0.7] });
     io.observe(hero); io.observe(video);
-  } else if (!reduce) { play(hero); }
+  } else if (!reduce) { visible.hero = true; play(hero); }
+
+  // if a clip stops loading (connection dropped, laptop woke from sleep), load it again instead of freezing
+  function broken(v) { return !!v.error || v.networkState === 3; }
+  function heal() {
+    if (document.hidden || navigator.onLine === false) return;
+    if (broken(video)) { video.load(); if (visible.cases && !reduce) play(video); }
+    if (broken(hero)) { hero.load(); if (visible.hero && !reduce) play(hero); }
+  }
+  setInterval(heal, 5000);
+  window.addEventListener('online', heal);
+  document.addEventListener('visibilitychange', heal);
 })();
 </script>
 </body>
