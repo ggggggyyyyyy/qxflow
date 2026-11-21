@@ -8,17 +8,11 @@ A static, single-page site built for GitHub Pages. No build step.
 2. In the repository, open **Settings > Pages** and set the source to the `main` branch, root folder.
 3. The site appears at `https://<name>.github.io/` a minute or two later.
 
-## Before you publish
+## The demo buttons
 
-Open `index.html`, scroll to the script at the bottom and set your address:
+"Try the demo", "Try the free demo" and "Open the free demo" all open `demo/`, the interactive review workspace. It is one self-contained file, `demo/index.html`, built from the `actuarial-runcheck-demo-engine` project. To update it, rebuild that project and replace this file.
 
-```js
-var CONTACT_EMAIL = 'YOUR-EMAIL@example.com';
-```
-
-Every "Book a demo" button uses it.
-
-The link-preview image (`og:image`, near the top of `index.html`) currently points at `https://ggggggyyyyyy.github.io/qxflow/assets/og.jpg`. Change it, and `og:url`, if the site moves to its own domain.
+There is no contact link on the page yet. To add one, set `CONTACT_EMAIL` in the script at the bottom of `index.html` and give any link the attribute `data-mail`.
 
 ## Add or change a case demo
 
@@ -42,6 +36,7 @@ Clip guidelines: 5 to 20 seconds, 1920x1080 (so it stays sharp in full screen), 
 - `assets/hero-reel.mp4`: the short reel under the headline
 - `assets/case-*.mp4` and `.jpg`: the four case clips and their posters
 - `assets/favicon.svg`, `assets/og.jpg`: browser icon and link-preview image
+- `demo/index.html`: the interactive demo the buttons open
 - `.nojekyll`: tells GitHub Pages to serve the files as they are
 
 Fonts load from Google Fonts (Inter, Inter Tight, JetBrains Mono, STIX Two Text).
