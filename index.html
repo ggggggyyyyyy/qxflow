@@ -69,7 +69,25 @@ h1 em{font-family:var(--serif);font-style:italic;font-weight:500;letter-spacing:
 .proof li{display:flex;align-items:center;gap:9px}
 .proof li:before{content:'';width:7px;height:7px;background:var(--teal);border-radius:2px}
 .frame{margin-top:56px;border-radius:20px;overflow:hidden;border:1px solid #C3D1E8;background:#1A4283;box-shadow:0 34px 90px rgba(16,42,96,.24);aspect-ratio:16/9}
-.frame video{display:block;width:100%;height:100%;object-fit:cover}
+.frame{position:relative}
+.frame video{display:block;width:100%;height:100%;object-fit:cover;cursor:zoom-in}
+.fs{position:absolute;right:14px;bottom:14px;z-index:2;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.38);background:rgba(10,27,61,.74);color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .15s,transform .15s,opacity .25s}
+.fs:hover{background:rgba(10,27,61,.94);transform:scale(1.06)}
+.fs:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.fsbar{display:none;position:absolute;left:50%;bottom:22px;z-index:2;transform:translateX(-50%);align-items:center;gap:12px;max-width:calc(100% - 140px);padding:8px 10px;border-radius:999px;background:rgba(10,27,61,.8);color:#fff;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:opacity .25s}
+.fsbar .nb{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);color:#fff}
+.fsbar .nb:hover{background:rgba(255,255,255,.24);border-color:rgba(255,255,255,.5)}
+.fsnow{display:flex;align-items:baseline;gap:10px;min-width:0;padding:0 6px;font-size:15px;font-weight:600;white-space:nowrap}
+.fsnow b{font-family:var(--mono);font-weight:400;font-size:13px;color:#C3D5F2}
+.fsnow span{overflow:hidden;text-overflow:ellipsis}
+.frame:fullscreen{width:100vw;height:100vh;margin:0;border:0;border-radius:0;background:#000;aspect-ratio:auto;box-shadow:none}
+.frame:fullscreen video{object-fit:contain;cursor:default}
+.frame:fullscreen .fsbar{display:flex}
+.frame:-webkit-full-screen{width:100vw;height:100vh;margin:0;border:0;border-radius:0;background:#000;aspect-ratio:auto;box-shadow:none}
+.frame:-webkit-full-screen video{object-fit:contain;cursor:default}
+.frame:-webkit-full-screen .fsbar{display:flex}
+.frame.idle{cursor:none}
+.frame.idle .fs,.frame.idle .fsbar{opacity:0;pointer-events:none}
 .note{font-size:13px;color:var(--ink3);margin:12px 2px 0}
 
 /* sections */
@@ -81,7 +99,8 @@ h2 em{font-family:var(--serif);font-style:italic;font-weight:500;letter-spacing:
 
 /* cases */
 .kicker b{font-weight:400;color:var(--ink3)}
-.cases{display:grid;grid-template-columns:minmax(0,410px) minmax(0,1fr);gap:28px;margin-top:40px;align-items:start}
+.cases{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:28px;margin-top:40px;align-items:start}
+@media (min-width:1380px){.cases{margin-left:-90px;margin-right:-90px}}
 .caselist{display:flex;flex-direction:column;gap:10px}
 .case{position:relative;display:grid;grid-template-columns:108px minmax(0,1fr);column-gap:14px;align-items:start;width:100%;text-align:left;background:rgba(255,255,255,.6);border:1px solid var(--line);border-radius:16px;padding:12px 16px 14px 12px;cursor:pointer;font:inherit;color:inherit;overflow:hidden;transition:background .15s,border-color .15s,box-shadow .15s}
 .case:hover{background:#fff;border-color:#B4C3DB}
@@ -112,7 +131,9 @@ h2 em{font-family:var(--serif);font-style:italic;font-weight:500;letter-spacing:
 .nb{flex:none;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;font-size:16px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
 .nb:hover{border-color:#B4C3DB}
 .stagebar .count{flex:none;font-family:var(--mono);font-size:13px;color:var(--ink2);min-width:60px;text-align:center}
-.stagebar .now{font-weight:600;font-size:15.5px;margin-left:6px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stagebar .now{flex:1;font-weight:600;font-size:15.5px;margin-left:6px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stagebar .fsbtn{flex:none;margin-left:auto}
+.stagebar .fsbtn svg{flex:none}
 
 /* roles + principles */
 .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:18px;margin-top:44px}
@@ -150,6 +171,8 @@ footer p{margin:0;max-width:70ch}
   .stage{position:static;order:-1}
   .case{grid-template-columns:96px minmax(0,1fr);column-gap:12px}
   .stagebar .now{display:none}
+  .fs{width:34px;height:34px;right:8px;bottom:8px}
+  .fs svg{width:14px;height:14px}
   .band{padding:48px 26px;border-radius:22px}
   .frame{border-radius:14px}
 }
@@ -185,10 +208,11 @@ footer p{margin:0;max-width:70ch}
         <li>Read-only by default</li>
         <li>Every step logged and reproducible</li>
       </ul>
-      <div class="frame">
+      <div class="frame" id="heroFrame">
         <video id="heroVideo" muted loop playsinline preload="metadata" poster="assets/hero-reel.jpg" aria-label="Short reel of QxFlow agents at work: a stale lapse table caught, a roll-forward closing, a review challenge and a cited answer">
           <source src="assets/hero-reel.mp4" type="video/mp4">
         </video>
+        <button class="fs" type="button" data-fs="heroFrame" aria-label="Play full screen" title="Full screen"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
       <p class="note">Illustrative data: fictional models, people and figures. The AXIS window is a simplified stand-in, not the actual product interface.</p>
     </div>
@@ -198,18 +222,25 @@ footer p{margin:0;max-width:70ch}
     <div class="wrap">
       <span class="kicker">Cases <b id="caseTotal"></b></span>
       <h2>See it work, <em>one case at a time.</em></h2>
-      <p class="sec-lede">Short clips, one workflow each. Pick any case, or let them play through in order.</p>
+      <p class="sec-lede">Short clips, one workflow each. Pick any case, or let them play through in order. Click or tap a clip to watch it full screen.</p>
       <div class="cases">
         <div class="caselist" id="caseList" role="tablist" aria-label="Cases"></div>
         <div class="stage" id="casePanel" role="tabpanel">
-          <div class="frame">
+          <div class="frame" id="caseFrame">
             <video id="caseVideo" muted playsinline preload="metadata"></video>
+            <button class="fs" type="button" data-fs="caseFrame" aria-label="Play full screen" title="Full screen"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="fsbar">
+              <button class="nb" type="button" data-step="-1" aria-label="Previous case">&larr;</button>
+              <span class="fsnow"><b id="fsCount"></b><span id="fsTitle"></span></span>
+              <button class="nb" type="button" data-step="1" aria-label="Next case">&rarr;</button>
+            </div>
           </div>
           <div class="stagebar">
-            <button class="nb" id="casePrev" type="button" aria-label="Previous case">&larr;</button>
+            <button class="nb" id="casePrev" type="button" data-step="-1" aria-label="Previous case">&larr;</button>
             <span class="count" id="caseCount" aria-live="polite"></span>
-            <button class="nb" id="caseNext" type="button" aria-label="Next case">&rarr;</button>
+            <button class="nb" id="caseNext" type="button" data-step="1" aria-label="Next case">&rarr;</button>
             <span class="now" id="caseNow"></span>
+            <button class="btn sec sm fsbtn" type="button" data-fs="caseFrame"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Full screen</button>
           </div>
           <p class="note">Illustrative data. The AXIS window is a simplified stand-in.</p>
         </div>
@@ -270,7 +301,7 @@ footer p{margin:0;max-width:70ch}
 var CONTACT_EMAIL = 'YOUR-EMAIL@example.com';
 
 // 2) The case demos. To add one: put its .mp4 and .jpg in assets/ and add a line here.
-//    role is "prep", "rev" or "appr". Keep clips 5 to 20 seconds, muted, 1280x720.
+//    role is "prep", "rev" or "appr". Keep clips 5 to 20 seconds, muted, 1920x1080.
 var CASES = [
   { n: '01', role: 'prep', roleName: 'Preparer', secs: 20,
     title: 'Catch the stale table before the run',
@@ -303,6 +334,9 @@ var CASES = [
   var hero = document.getElementById('heroVideo');
   var countEl = document.getElementById('caseCount');
   var nowEl = document.getElementById('caseNow');
+  var fsCount = document.getElementById('fsCount');
+  var fsTitle = document.getElementById('fsTitle');
+  var caseFrame = document.getElementById('caseFrame');
   var tabs = [];
   var current = -1;
   var visible = { hero: false, cases: false };
@@ -351,14 +385,19 @@ var CASES = [
     var c = CASES[idx];
     countEl.textContent = two(idx + 1) + ' / ' + two(CASES.length);
     nowEl.textContent = c.title;
+    fsCount.textContent = countEl.textContent;
+    fsTitle.textContent = c.title;
     video.poster = c.poster;
     video.src = c.src;
     video.setAttribute('aria-label', 'Demo clip: ' + c.title);
     video.load();
     if ((visible.cases || userAction) && !reduce) play(video);
   }
-  document.getElementById('casePrev').addEventListener('click', function () { select((current + CASES.length - 1) % CASES.length, true); });
-  document.getElementById('caseNext').addEventListener('click', function () { select((current + 1) % CASES.length, true); });
+  function step(n) { select((current + n + CASES.length) % CASES.length, true); }
+  var steppers = document.querySelectorAll('[data-step]');
+  for (var k = 0; k < steppers.length; k++) {
+    steppers[k].addEventListener('click', function () { step(parseInt(this.getAttribute('data-step'), 10)); });
+  }
   video.addEventListener('timeupdate', function () {
     if (current < 0 || !video.duration) return;
     tabs[current].querySelector('.bar i').style.width = (100 * video.currentTime / video.duration).toFixed(1) + '%';
@@ -379,6 +418,62 @@ var CASES = [
     }, { threshold: [0, 0.08, 0.35, 0.7] });
     io.observe(hero); io.observe(video);
   } else if (!reduce) { visible.hero = true; play(hero); }
+
+  // full screen: the button, or a click on the clip itself
+  function fsEl() { return document.fullscreenElement || document.webkitFullscreenElement || null; }
+  function nativeFs(v) { if (v && v.webkitEnterFullscreen) { try { v.webkitEnterFullscreen(); } catch (e) {} } }
+  function toggleFs(frame) {
+    var v = frame.querySelector('video');
+    if (fsEl()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+    var req = frame.requestFullscreen || frame.webkitRequestFullscreen;
+    if (!req) { nativeFs(v); return; }   // iPhone: use the built-in video player
+    try { var p = req.call(frame); if (p && p.catch) p.catch(function () { nativeFs(v); }); } catch (e) { nativeFs(v); }
+    if (!reduce) play(v);
+  }
+  var fsButtons = document.querySelectorAll('[data-fs]');
+  for (var m = 0; m < fsButtons.length; m++) {
+    fsButtons[m].addEventListener('click', function () { toggleFs(document.getElementById(this.getAttribute('data-fs'))); });
+  }
+  if (!reduce) {
+    [hero, video].forEach(function (v) {
+      v.addEventListener('click', function () {
+        var frame = v.parentNode;
+        if (fsEl() === frame) { if (v.paused) play(v); else v.pause(); }
+        else toggleFs(frame);
+      });
+    });
+  }
+  var idleTimer;
+  function wake() {
+    var f = fsEl();
+    if (!f) return;
+    f.classList.remove('idle');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(function () { var g = fsEl(); if (g) g.classList.add('idle'); }, 2600);
+  }
+  function onFsChange() {
+    var frames = document.querySelectorAll('.frame');
+    for (var j = 0; j < frames.length; j++) frames[j].classList.remove('idle');
+    var f = fsEl();
+    for (var q = 0; q < fsButtons.length; q++) {
+      if (!fsButtons[q].classList.contains('fs')) continue;
+      var label = f ? 'Exit full screen' : 'Play full screen';
+      fsButtons[q].setAttribute('aria-label', label);
+      fsButtons[q].setAttribute('title', f ? 'Exit full screen' : 'Full screen');
+    }
+    if (f) wake();
+    else if (!reduce) { if (visible.cases) play(video); if (visible.hero) play(hero); }
+  }
+  document.addEventListener('fullscreenchange', onFsChange);
+  document.addEventListener('webkitfullscreenchange', onFsChange);
+  document.addEventListener('mousemove', wake);
+  document.addEventListener('touchstart', wake, { passive: true });
+  document.addEventListener('keydown', function (e) {
+    if (fsEl() !== caseFrame) return;
+    wake();
+    if (e.key === 'ArrowRight') step(1);
+    if (e.key === 'ArrowLeft') step(-1);
+  });
 
   // if a clip stops loading (connection dropped, laptop woke from sleep), load it again instead of freezing
   function broken(v) { return !!v.error || v.networkState === 3; }

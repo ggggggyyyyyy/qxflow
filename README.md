@@ -34,7 +34,7 @@ The link-preview image (`og:image`, near the top of `index.html`) currently poin
 
 `role` sets the tag colour: `prep` (teal), `rev` (blue) or `appr` (amber).
 
-Clip guidelines: 5 to 20 seconds, 1280x720, H.264 `.mp4`, no audio, about 2 MB or less. Clips play muted and advance to the next case when they end.
+Clip guidelines: 5 to 20 seconds, 1920x1080 (so it stays sharp in full screen), H.264 `.mp4`, no audio, about 5 MB or less. Clips play muted and advance to the next case when they end.
 
 ## Files
 
