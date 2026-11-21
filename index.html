@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QxFlow — AI agents for Canadian life actuarial teams</title>
+<meta name="description" content="QxFlow puts AI agents to work on IFRS 17 valuation and reporting: input checks, run orchestration, independent review and the Appointed Actuary's Report. On your infrastructure, inside your models.">
+<meta property="og:title" content="QxFlow — AI agents for Canadian life actuarial teams">
+<meta property="og:description" content="Input checks, run orchestration, independent review and the Appointed Actuary's Report. Code calculates. Actuaries approve.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/og.jpg">
+<meta name="theme-color" content="#F5F7FB">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@500;600&family=JetBrains+Mono:wght@400;500&family=STIX+Two+Text:ital,wght@1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F7FB;--card:#FFFFFF;--ink:#0A1B3D;--ink2:#465672;--ink3:#5C6B85;--line:#DCE3EE;
+  --blue:#1F56C5;--teal:#12B5A4;--tealink:#0A7A6E;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --disp:'Inter Tight','Inter',system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+  --serif:'STIX Two Text','Times New Roman',Times,serif;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.mono{font-family:var(--mono)}
+
+/* wordmark */
+.wm{font-family:var(--sans);font-weight:500;font-size:28px;line-height:1;color:var(--ink);text-decoration:none;white-space:nowrap;display:inline-block}
+.wm .q{font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.14em}
+.wm .x{font-family:var(--serif);font-style:italic;font-weight:500;font-size:.68em;vertical-align:-.32em;margin-left:.02em;color:var(--tealink)}
+.wm .f{letter-spacing:-.03em;margin-left:.07em}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:rgba(245,247,251,.84);-webkit-backdrop-filter:saturate(1.4) blur(12px);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid rgba(220,227,238,.8)}
+.nav .wrap{display:flex;align-items:center;gap:28px;height:68px}
+.nav nav{margin-left:auto;display:flex;gap:28px;font-size:15px}
+.nav nav a{color:var(--ink2);text-decoration:none}
+.nav nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 22px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;border:1px solid transparent;cursor:pointer}
+.btn.pri{background:var(--ink);color:#fff}
+.btn.pri:hover{background:#14306B}
+.btn.sec{background:#fff;border-color:var(--line);color:var(--ink)}
+.btn.sec:hover{border-color:#B9C6DC}
+.btn.light{background:#fff;color:var(--ink)}
+.btn.light:hover{background:#EAF1FC}
+.btn.sm{height:40px;padding:0 18px;font-size:14.5px}
+
+/* hero */
+.hero{position:relative;padding:84px 0 40px;overflow:hidden}
+.hero:before{content:'';position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(900px 520px at 88% -8%,rgba(31,86,197,.16),rgba(31,86,197,0) 62%),
+  radial-gradient(760px 520px at -6% 34%,rgba(18,181,164,.13),rgba(18,181,164,0) 60%)}
+.hero:after{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(10,27,61,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(10,27,61,.035) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:linear-gradient(#000,transparent 78%);mask-image:linear-gradient(#000,transparent 78%)}
+.hero .wrap{position:relative;z-index:1}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);display:inline-flex;align-items:center;gap:10px}
+.eyebrow:before{content:'';width:8px;height:8px;border-radius:50%;background:var(--teal)}
+h1{font-family:var(--disp);font-weight:600;font-size:clamp(42px,6.3vw,86px);line-height:1.02;letter-spacing:-.04em;margin:22px 0 0;text-wrap:balance}
+h1 em{font-family:var(--serif);font-style:italic;font-weight:500;letter-spacing:-.025em;color:var(--blue)}
+.lede{font-size:clamp(18px,1.65vw,21px);color:var(--ink2);max-width:58ch;margin:26px 0 0;text-wrap:pretty}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.proof{display:flex;flex-wrap:wrap;gap:10px 28px;margin:30px 0 0;padding:0;list-style:none;font-family:var(--mono);font-size:13px;color:var(--ink2)}
+.proof li{display:flex;align-items:center;gap:9px}
+.proof li:before{content:'';width:7px;height:7px;background:var(--teal);border-radius:2px}
+.frame{margin-top:56px;border-radius:20px;overflow:hidden;border:1px solid #C3D1E8;background:#1A4283;box-shadow:0 34px 90px rgba(16,42,96,.24);aspect-ratio:16/9}
+.frame video{display:block;width:100%;height:100%;object-fit:cover}
+.note{font-size:13px;color:var(--ink3);margin:12px 2px 0}
+
+/* sections */
+section{padding:96px 0}
+.kicker{font-family:var(--mono);font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--blue)}
+h2{font-family:var(--disp);font-weight:600;font-size:clamp(30px,3.7vw,50px);line-height:1.04;letter-spacing:-.035em;margin:14px 0 0;max-width:20ch;text-wrap:balance}
+h2 em{font-family:var(--serif);font-style:italic;font-weight:500;letter-spacing:-.02em;color:var(--blue)}
+.sec-lede{color:var(--ink2);max-width:56ch;margin:16px 0 0;font-size:18px}
+
+/* cases */
+.cases{display:grid;grid-template-columns:minmax(0,390px) minmax(0,1fr);gap:28px;margin-top:44px;align-items:start}
+.caselist{display:flex;flex-direction:column;gap:6px}
+.case{position:relative;display:block;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:16px;padding:18px 20px 20px;cursor:pointer;font:inherit;color:inherit;overflow:hidden}
+.case:hover{background:rgba(255,255,255,.6)}
+.case[aria-selected="true"]{background:#fff;border-color:var(--line);box-shadow:0 12px 34px rgba(16,42,96,.09)}
+.case .top{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12.5px;color:var(--ink3)}
+.case .top .n{color:var(--blue);font-weight:500}
+.case .top .t{margin-left:auto}
+.chip{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:6px;font-weight:500}
+.chip.prep{background:#DDF7F2;color:#0A6F64}
+.chip.rev{background:#E3EDFF;color:#1D4FB8}
+.chip.appr{background:#FFF1D6;color:#8A5A00}
+.case h3{font-size:19px;line-height:1.25;font-weight:600;letter-spacing:-.012em;margin:9px 0 0}
+.case p{margin:9px 0 0;font-size:15.5px;line-height:1.5;color:var(--ink2);display:none}
+.case[aria-selected="true"] p{display:block}
+.case .bar{position:absolute;left:0;right:0;bottom:0;height:3px;background:transparent}
+.case[aria-selected="true"] .bar{background:#EAF0F9}
+.case .bar i{display:block;height:100%;width:0;background:var(--blue)}
+.stage{position:sticky;top:92px}
+.stage .frame{margin-top:0}
+
+/* roles + principles */
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:18px;margin-top:44px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px 26px 28px}
+.card h3{font-size:20px;font-weight:600;letter-spacing:-.012em;margin:16px 0 0}
+.card p{margin:8px 0 0;color:var(--ink2);font-size:16px}
+.grid5{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(205px,100%),1fr));gap:14px;margin-top:44px}
+.rule{border-top:2px solid var(--ink);padding:18px 4px 0}
+.rule .n{font-family:var(--mono);font-size:12.5px;color:var(--blue)}
+.rule h3{font-size:19px;font-weight:600;letter-spacing:-.012em;margin:10px 0 0}
+.rule p{margin:8px 0 0;color:var(--ink2);font-size:15.5px}
+.tint{background:#EDF2F9}
+
+/* call to action */
+.band{position:relative;overflow:hidden;border-radius:28px;padding:72px 56px;color:#fff;background:linear-gradient(155deg,#2256A8 0%,#1A4283 46%,#17497C 100%)}
+.band:before{content:'';position:absolute;inset:0;background:radial-gradient(700px 460px at 92% -10%,rgba(110,184,255,.6),rgba(110,184,255,0) 65%),radial-gradient(620px 460px at -8% 118%,rgba(44,232,204,.5),rgba(44,232,204,0) 62%)}
+.band>*{position:relative}
+.band h2{color:#fff;max-width:18ch}
+.band h2 em{color:#7FF3E3}
+.band p{color:#DCE7F8;max-width:52ch;margin:16px 0 0;font-size:18px}
+.band .cta{margin-top:30px}
+.band .mono{display:block;margin-top:26px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:#C3D5F2}
+
+footer{padding:44px 0 56px;color:var(--ink3);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:16px 40px;align-items:flex-start;justify-content:space-between}
+footer p{margin:0;max-width:70ch}
+
+@media (max-width:900px){
+  .dbr{display:none}
+  .nav nav{display:none}
+  .nav .btn{margin-left:auto}
+  .hero{padding:56px 0 24px}
+  section{padding:68px 0}
+  .cases{grid-template-columns:minmax(0,1fr)}
+  .stage{position:static;order:-1}
+  .band{padding:48px 26px;border-radius:22px}
+  .frame{border-radius:14px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="wm" href="#top" aria-label="QxFlow, home"><span class="q">q</span><span class="x">x</span><span class="f">flow</span></a>
+    <nav aria-label="Sections">
+      <a href="#cases">Cases</a>
+      <a href="#roles">Who it's for</a>
+      <a href="#principles">Principles</a>
+    </nav>
+    <a class="btn pri sm" data-mail href="#contact">Book a demo</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <span class="eyebrow">IFRS 17 &middot; Built for Canada</span>
+      <h1>AI agents for Canadian<br class="dbr"> <em>life actuarial teams.</em></h1>
+      <p class="lede">QxFlow checks inputs, runs valuations, reviews results and drafts the Appointed Actuary&rsquo;s Report. It works on your infrastructure, inside your existing models. Code calculates every number. Actuaries approve every change.</p>
+      <div class="cta">
+        <a class="btn pri" data-mail href="#contact">Book a demo</a>
+        <a class="btn sec" href="#cases">Watch the cases</a>
+      </div>
+      <ul class="proof">
+        <li>On-premise or private cloud</li>
+        <li>Read-only by default</li>
+        <li>Every step logged and reproducible</li>
+      </ul>
+      <div class="frame">
+        <video id="heroVideo" muted loop playsinline preload="metadata" poster="assets/hero-reel.jpg" aria-label="Short reel of QxFlow agents at work: a stale lapse table caught, a roll-forward closing, a review challenge and a cited answer">
+          <source src="assets/hero-reel.mp4" type="video/mp4">
+        </video>
+      </div>
+      <p class="note">Illustrative data: fictional models, people and figures. The AXIS window is a simplified stand-in, not the actual product interface.</p>
+    </div>
+  </div>
+
+  <section id="cases">
+    <div class="wrap">
+      <span class="kicker">Cases</span>
+      <h2>See it work, <em>one case at a time.</em></h2>
+      <p class="sec-lede">Short clips, one workflow each. Pick a case or let them play through.</p>
+      <div class="cases">
+        <div class="caselist" id="caseList" role="tablist" aria-label="Cases"></div>
+        <div class="stage" id="casePanel" role="tabpanel">
+          <div class="frame">
+            <video id="caseVideo" muted playsinline preload="metadata"></video>
+          </div>
+          <p class="note">Illustrative data. The AXIS window is a simplified stand-in.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="roles" class="tint">
+    <div class="wrap">
+      <span class="kicker">Who it's for</span>
+      <h2>Built around the way valuation teams <em>already work.</em></h2>
+      <div class="grid3">
+        <div class="card"><span class="chip prep">Preparers</span><h3>Checks, runs and drill-downs</h3><p>Input checks before the run, batch orchestration, log scans and roll-forward checks, highly automated.</p></div>
+        <div class="card"><span class="chip rev">Reviewers</span><h3>Independent review</h3><p>A separate agent that sees only inputs and final outputs, recalculates samples and challenges the analysis of change.</p></div>
+        <div class="card"><span class="chip appr">Approvers</span><h3>Report, Q&amp;A and sign-off evidence</h3><p>The Appointed Actuary&rsquo;s Report rolled forward with changes highlighted, and answers that cite their sources.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="principles">
+    <div class="wrap">
+      <span class="kicker">Principles</span>
+      <h2>The AI orchestrates. <em>It does not decide.</em></h2>
+      <div class="grid5">
+        <div class="rule"><span class="n">01</span><h3>Data stays in-house</h3><p>On-premise or private cloud. The model sees summaries only.</p></div>
+        <div class="rule"><span class="n">02</span><h3>Code calculates</h3><p>Deterministic code runs every number and check. The AI orchestrates and explains.</p></div>
+        <div class="rule"><span class="n">03</span><h3>Check &ne; review</h3><p>Rule-based self-checks, plus an independent reviewer agent.</p></div>
+        <div class="rule"><span class="n">04</span><h3>Humans approve</h3><p>Assumption changes and sign-off stay with actuaries.</p></div>
+        <div class="rule"><span class="n">05</span><h3>Fully traceable</h3><p>Data versions, code, parameters and sources logged.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="padding-top:0">
+    <div class="wrap">
+      <div class="band">
+        <h2>See it on a workflow <em>you know.</em></h2>
+        <p>Tell us which part of your valuation cycle takes the most reruns, and we will walk you through the matching case.</p>
+        <div class="cta"><a class="btn light" data-mail href="#contact">Book a demo</a></div>
+        <span class="mono">IFRS 17 &middot; Appointed Actuary reporting &middot; Canada</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="wm" href="#top" aria-label="QxFlow, home" style="font-size:22px"><span class="q">q</span><span class="x">x</span><span class="f">flow</span></a>
+    <p>Demo clips use illustrative data with fictional models, people and figures. The AXIS window shown is a simplified stand-in, not the actual product interface.<br>&copy; 2026 QxFlow</p>
+  </div>
+</footer>
+
+<script>
+/* ------------------------------------------------------------------
+   Site settings. Edit these two blocks; nothing else needs to change.
+   ------------------------------------------------------------------ */
+// 1) Where "Book a demo" sends people. Replace with your address.
+var CONTACT_EMAIL = 'YOUR-EMAIL@example.com';
+
+// 2) The case demos. To add one: put its .mp4 and .jpg in assets/ and add a line here.
+//    role is "prep", "rev" or "appr". Keep clips 5 to 20 seconds, muted, 1280x720.
+var CASES = [
+  { n: '01', role: 'prep', roleName: 'Preparer', secs: 20,
+    title: 'Catch the stale table before the run',
+    text: 'The input checker opens the model read-only, confirms the in-force extract, reconciles it to the admin system, and flags a lapse table that no longer matches the approved memo.',
+    src: 'assets/case-input-check.mp4', poster: 'assets/case-input-check.jpg' },
+  { n: '02', role: 'prep', roleName: 'Preparer', secs: 14,
+    title: 'Run, check, drill down',
+    text: 'After approval, the agent loads the approved table, runs the batch, scans the log, closes the roll-forward and traces the one group that moved.',
+    src: 'assets/case-run.mp4', poster: 'assets/case-run.jpg' },
+  { n: '03', role: 'rev', roleName: 'Reviewer', secs: 14,
+    title: 'An independent second pair of eyes',
+    text: 'A separate agent sees only inputs and final outputs. It recalculates sample policies, re-performs the roll-forward and raises challenges for the human reviewer.',
+    src: 'assets/case-review.mp4', poster: 'assets/case-review.jpg' },
+  { n: '04', role: 'appr', roleName: 'Approver', secs: 16,
+    title: 'The AA Report, changes highlighted',
+    text: "QxFlow rolls last year's report forward, marks every change, and answers questions with cited evidence, stating what it did not check. The signature stays with the Appointed Actuary.",
+    src: 'assets/case-report.mp4', poster: 'assets/case-report.jpg' }
+];
+
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // contact links
+  var links = document.querySelectorAll('[data-mail]');
+  for (var i = 0; i < links.length; i++) {
+    links[i].setAttribute('href', 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('QxFlow demo'));
+  }
+
+  // case player
+  var list = document.getElementById('caseList');
+  var video = document.getElementById('caseVideo');
+  var tabs = [];
+  var current = -1;
+  var caseVisible = false;
+  function fmt(s) { return '0:' + (s < 10 ? '0' : '') + s; }
+  CASES.forEach(function (c, idx) {
+    var b = document.createElement('button');
+    b.className = 'case';
+    b.type = 'button';
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-controls', 'casePanel');
+    b.setAttribute('aria-selected', 'false');
+    b.innerHTML = '<span class="top"><span class="n"></span><span class="chip"></span><span class="t"></span></span><h3></h3><p></p><span class="bar"><i></i></span>';
+    b.querySelector('.n').textContent = c.n;
+    var chip = b.querySelector('.chip'); chip.textContent = c.roleName; chip.className = 'chip ' + c.role;
+    b.querySelector('.t').textContent = fmt(c.secs);
+    b.querySelector('h3').textContent = c.title;
+    b.querySelector('p').textContent = c.text;
+    b.addEventListener('click', function () { select(idx, true); });
+    list.appendChild(b);
+    tabs.push(b);
+  });
+  function select(idx, userAction) {
+    if (idx === current) { if (userAction) { video.currentTime = 0; play(video); } return; }
+    current = idx;
+    tabs.forEach(function (t, j) {
+      t.setAttribute('aria-selected', j === idx ? 'true' : 'false');
+      t.querySelector('.bar i').style.width = '0';
+    });
+    var c = CASES[idx];
+    video.poster = c.poster;
+    video.src = c.src;
+    video.setAttribute('aria-label', 'Demo clip: ' + c.title);
+    video.load();
+    if ((caseVisible || userAction) && !reduce) play(video);
+  }
+  function play(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+  video.addEventListener('timeupdate', function () {
+    if (current < 0 || !video.duration) return;
+    tabs[current].querySelector('.bar i').style.width = (100 * video.currentTime / video.duration).toFixed(1) + '%';
+  });
+  video.addEventListener('ended', function () { select((current + 1) % CASES.length, true); });
+  if (reduce) { video.controls = true; }
+  select(0, false);
+
+  // play videos only while they are on screen
+  var hero = document.getElementById('heroVideo');
+  if (reduce) { hero.controls = true; }
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var on = e.isIntersecting && e.intersectionRatio > (e.target === hero ? 0.08 : 0.35);
+        if (e.target === video) caseVisible = on;
+        if (on) play(e.target); else e.target.pause();
+      });
+    }, { threshold: [0, 0.08, 0.35, 0.7] });
+    io.observe(hero); io.observe(video);
+  } else if (!reduce) { play(hero); }
+})();
+</script>
+</body>
+</html>
